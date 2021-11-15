@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-k8s
+  labels:
+    app: demo-k8s
+    type: back-end
+spec:
+  template:
+    metadata:
+      name: demo-k8s-pod
+      labels:
+        app: demo-k8s
+    spec:
+      containers:
+        - name: demo-k8s
+          image: 10.140.64.116:5000/demo-k8s:0.0.6-SNAPSHOT
+          imagePullPolicy: Always
+#          restartPolicy: Always
+#          terminationGracePeriodSeconds: 30
+          # ports:
+                  #          - containerPort: 8080
+  replicas: 2
+  minReadySeconds: 45
+  selector:
+    matchLabels:
+      app: demo-k8s 
+
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  labels:
+    app: demo-k8s
+  name: demo-k8s
+spec:
+  type: NodePort
+  ports:
+  - nodePort: 30703
+    port: 8081
+    protocol: TCP
+  selector:
+    app: demo-k8s

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dockerdemo-deployment
+  labels:
+    app: dockerdemo
+    type: back-end
+spec:
+  template:
+    metadata:
+      name: dockerdemo-pod
+      labels:
+        app: dockerdemo
+    spec:
+      containers:
+        - name: dockerdemo-container
+          image: ranveerk/dockerdemo
+          # ports:
+                  #          - containerPort: 8080
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dockerdemo
