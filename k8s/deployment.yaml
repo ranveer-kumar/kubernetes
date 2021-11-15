@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-rest-api
+  labels:
+    app: hello-world-rest-api
+    type: back-end
+spec:
+  template:
+    metadata:
+      name: hello-world-rest-api-pod
+      labels:
+        app: hello-world-rest-api
+    spec:
+      containers:
+        - name: hello-world-rest-api
+          image: 10.140.64.116:5000/hello-world-rest-api:0.0.4-SNAPSHOT
+#          restartPolicy: Always
+#          terminationGracePeriodSeconds: 30
+          # ports:
+                  #          - containerPort: 8080
+  replicas: 2
+  minReadySeconds: 45
+  selector:
+    matchLabels:
+      app: hello-world-rest-api
+
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  labels:
+    app: hello-world-rest-api
+  name: hello-world-rest-api
+spec:
+  type: NodePort
+  ports:
+  - nodePort: 30702
+    port: 8080
+    protocol: TCP
+  selector:
+    app: hello-world-rest-api

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-deployment
+  labels:
+    app: tomcat
+    type: front-end
+spec:
+  template:
+    metadata:
+      name: myapp-pod
+      labels:
+        app: tomcat
+    spec:
+      containers:
+        - name: nginx-container
+          image: tomcat
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tomcat

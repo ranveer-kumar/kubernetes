@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gateway-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /demo-k8s/*
+        backend:
+          serviceName: demo-k8s
+          servicePort: 8081          
+      - path: /demo-k8s-b/*
+        backend:
+          serviceName: deno-k8s-b
+          servicePort: 8082

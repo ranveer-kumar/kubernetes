@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: consul-server-1
+  name: consul-server-1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        io.kompose.service: consul-server-1
+    spec:
+      containers:
+      - args:
+        - agent
+        - -server
+        - -retry-join
+        - consul-server-bootstrap
+        - -client
+        - 0.0.0.0
+        image: consul:latest
+        name: consul-server-1
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      io.kompose.service: consul-server-1

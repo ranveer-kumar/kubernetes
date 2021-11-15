@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency-exchange
+  labels:
+    app: currency-exchange
+    type: back-end
+spec:
+  replicas: 1
+  minReadySeconds: 45
+  selector:
+    matchLabels:
+      app: currency-exchange
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: currency-exchange
+  template:
+    metadata:
+      name: currency-exchange-pod
+      labels:
+        app: currency-exchange
+    spec:
+      containers:
+        - name: currency-exchange
+          #image: 10.140.64.116:5000/demo-k8s-consul-b:0.0.1-SNAPSHOT
+          image: 10.140.64.116:5000/currency-exchange:0.0.1-RELEASE
+          ports:
+          - name: liveness-port
+            containerPort: 8000
+          resources: #CHANGE
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1024Mi #256Mi
+#          readineseProbe:
+#            httpGet:
+#              path: /
+#              port: liveness-port
+#            failureThreshold: 5
+#            periodSeconds: 10
+#            initialDelaySeconds: 60
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: liveness-port
+#            failureThreshold: 5
+#            periodSeconds: 10
+#            initialDelaySeconds: 60
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+          # ports:
+                  #          - containerPort: 8080
+
